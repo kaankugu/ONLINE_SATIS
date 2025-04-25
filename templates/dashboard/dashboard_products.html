@@ -1,0 +1,471 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ürün Yönetimi</title>
+    <link rel="stylesheet" href="{% static 'css/add_product.css' %}">
+    <style>
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            max-height: 85vh;           /* ekranın %90'ını geçmesin */
+            overflow-y: auto;           /* içerik taşarsa kaydır */
+            padding-right: 16px; 
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            margin-top:80px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.3s ease;
+        }
+
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Filters & bulk */
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .controls>* {
+            padding: 8px;
+        }
+
+        .bulk-actions button {
+            margin-right: 8px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        th {
+            background: #f9f9f9;
+        }
+
+        .action-btn {
+            margin-top: 10px;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'menu.html' %}
+
+    <section class="container">
+        <h1>Ürün Yönetimi</h1>
+        <button id="openAddBtn" class="toggle-btn">+ Yeni Ürün</button>
+
+        <!-- Filtre ve Bulk -->
+        <div class="controls">
+            <input type="text" id="searchTitle" class="dashboard-input" placeholder="Başlık ara…">
+            <select id="filterType">
+                <option value="">Tüm Türler</option>
+                <option value="tabak">Tabak</option>
+                <option value="kase">Kase</option>
+                <option value="karo">Karo</option>
+                <option value="vazo">Vazo</option>
+                <option value="diğer">Diğer</option>
+            </select>
+            <select id="filterStatus">
+                <option value="">Tüm Durumlar</option>
+                <option value="true">Aktif</option>
+                <option value="false">Pasif</option>
+            </select>
+
+            <div class="bulk-actions">
+                <button id="bulkActivate">Toplu Aktifleştir</button>
+                <button id="bulkDeactivate">Toplu Pasifleştir</button>
+                <button id="bulkDelete">Toplu Sil</button>
+            </div>
+        </div>
+
+        <!-- Ürün Tablosu -->
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll" /></th>
+                    <th>ID</th>
+                    <th>Görsel</th>
+                    <th>Başlık</th>
+                    <th>Fiyat</th>
+                    <th>Tür</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <!-- Modal: Ekle / Düzenle -->
+    <div id="form-mode-note" style="font-size:13px;color:#777;margin-bottom:10px;">Yeni ürün eklemek üzeresiniz.</div>
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Yeni Ürün</h2>
+            <form id="modalForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" name="title" id="m_title" required />
+                </div>
+                <div class="form-group">
+                    <label>Tür</label>
+                    <select name="type" id="m_type" required>
+                        <option value="">Seçiniz</option>
+                        <option value="tabak">Tabak</option>
+                        <option value="kase">Kase</option>
+                        <option value="karo">Karo</option>
+                        <option value="vazo">Vazo</option>
+                        <option value="diğer">Diğer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea name="description" id="m_description" required style="height: 80px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Fiyat</label>
+                    <input type="number" name="price" id="m_price" step="0.01" required />
+                </div>
+                <div class="form-group">
+                    <label>Durum</label>
+                    <select name="permission" id="m_permission">
+                        <option value="true">Aktif</option>
+                        <option value="false">Pasif</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Resimler</label>
+                    <input type="file" id="m_images" multiple accept="image/*" />
+                </div>
+                <div id="m_preview" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;"></div>
+
+                <button type="submit" class="submit-btn" style="margin-top: 20px;">Kaydet</button>
+                <button type="button" id="closeModal" class="submit-btn"
+                    style="background:#ccc;color:#000;margin-top: 20px;">İptal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // API URL’leri
+        const API_LIST = "/dashboard/products/";
+        const API_CREATE = "/dashboard/products/";
+        const API_DETAIL = id => `/dashboard/products/${id}/`;
+
+        let products = [], // tüm ürünler
+            filtered = [],
+            editId = null,
+            fileList = [];
+
+        function hideModal() {
+            $('#productModal').removeClass('open');
+        }
+
+        $(function () {
+            // Modal aç/kapa
+            $('#openAddBtn').click(() => showModal());
+            $('#closeModal').click(() => hideModal());
+
+            // Filtre olayları
+            $('#searchTitle, #filterType, #filterStatus').on('input change', applyFilter);
+
+            // Bulk action
+            $('#selectAll').on('change', function () {
+                $('tbody input.row-select').prop('checked', this.checked);
+            });
+            $('#bulkActivate').click(() => bulkUpdate('true'));
+            $('#bulkDeactivate').click(() => bulkUpdate('false'));
+            $('#bulkDelete').click(bulkDelete);
+
+            // Modal form submit
+            $('#modalForm').submit(e => {
+                e.preventDefault();
+                const btn = $('.submit-btn').first();
+                btn.text(editId ? 'Güncelleniyor...' : 'Kaydediliyor...');
+                editId ? updateProduct(editId) : createProduct();
+            });
+
+            // Resim preview
+            $('#m_images').change(e => {
+                fileList = Array.from(e.target.files);
+                $('#m_preview').empty();
+                fileList.forEach(f => {
+                    const img = URL.createObjectURL(f);
+                    $('#m_preview').append(`<img src="${img}" style="max-width:60px;border:1px solid #ccc;">`);
+                });
+            });
+
+            // İlk veri çek
+            fetchProducts();
+        });
+
+        // Veri çek ve render et
+        function fetchProducts() {
+            $.get(API_LIST, data => {
+                products = data;
+                filtered = products;
+                renderTable(filtered);
+            });
+        }
+
+        function renderTable(arr) {
+            const rows = arr.map(p => `
+        <tr>
+          <td><input type="checkbox" class="row-select" data-id="${p.id}"></td>
+          <td>${p.id}</td>
+          <td><img src="${p.images?.[0]?.image || '/static/images/default.png'}" style="width:60px;height:60px;object-fit:cover;"></td>
+          <td>${p.title}</td>
+          <td>${p.price}</td>
+          <td>${p.type}</td>
+          <td>${p.permission ? 'Aktif' : 'Pasif'}</td>
+          <td>
+            <span class="action-btn" onclick="startEdit(${p.id})">✏️</span>
+            <span class="action-btn" onclick="deleteOne(${p.id})">🗑️</span>
+          </td>
+        </tr>
+      `).join('');
+            $('#productTable tbody').html(rows);
+        }
+
+        // Filtre uygula
+        function applyFilter() {
+            const tx = $('#searchTitle').val().toLowerCase();
+            const ty = $('#filterType').val();
+            const st = $('#filterStatus').val();
+            filtered = products.filter(p => {
+                return (!tx || p.title.toLowerCase().includes(tx))
+                    && (!ty || p.type === ty)
+                    && (!st || String(p.permission) === st);
+            });
+            renderTable(filtered);
+        }
+
+        // Modal göster
+        function showModal(p) {
+            if (!p) {
+                editId = null;
+                $('#modalTitle').text('Yeni Ürün');
+                $('#form-mode-note').text('Yeni ürün eklemek üzeresiniz.');
+                $('#modalForm')[0].reset();
+                $('#m_preview').empty();
+                fileList = [];
+            } else {
+                editId = p.id;
+                $('#modalTitle').text('Ürün Düzenle');
+                $('#form-mode-note').text('Bu ürünü düzenliyorsunuz.');
+                $('#m_title').val(p.title);
+                $('#m_type').val(p.type);
+                $('#m_description').val(p.description);
+                $('#m_price').val(p.price);
+                $('#m_permission').val(String(p.permission));
+                $('#m_preview').empty();
+                fileList = [];
+            }
+            $('#productModal').addClass('open');
+        }
+
+
+        // Yeni ürün
+        function createProduct() {
+            const fd = new FormData();
+            fd.append('title', $('#m_title').val());
+            fd.append('type', $('#m_type').val());
+            fd.append('description', $('#m_description').val());
+            fd.append('price', $('#m_price').val());
+            fd.append('permission', $('#m_permission').val());
+            fileList.forEach(f => fd.append('images', f));
+            $.ajax({
+                url: API_CREATE,
+                type: 'POST',
+                data: fd,
+                processData: false,
+                contentType: false,
+                xhrFields: { withCredentials: true }, // ← JWT gönderilir
+                success: () => {
+                    hideModal();
+                    $('.submit-btn').first().text('Kaydet');  // ← bu satır eksikse hep kalır
+                    fetchProducts();
+                },
+                error: err => alert('Ekleme Hatası')
+            });
+        }
+
+        // Düzenlemeyi başlat
+        function startEdit(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+
+            showModal(p);  // modalı aç
+
+            $('#m_title').val(p.title);
+            $('#m_type').val(p.type);
+            $('#m_description').val(p.description);
+            $('#m_price').val(p.price);
+            $('#m_permission').val(String(p.permission));
+
+            $('#m_preview').empty(); // önce temizle
+
+            if (p?.images?.length) {
+                p.images.forEach(img => {
+                    $('#m_preview').append(`
+                        <div style="position:relative">
+                            <img src="${img.image}" style="width:60px;height:60px;object-fit:cover;border:1px solid #ccc;">
+                            <span onclick="deleteImage(${img.id})"
+                                style="position:absolute;top:-6px;right:-6px;cursor:pointer;background:#f00;color:#fff;border-radius:50%;padding:0 5px;font-size:12px;">×</span>
+                        </div>
+                    `);
+                });
+            }
+
+            fileList = [];  // en sona al
+        }
+
+        // Güncelle
+        function updateProduct(id) {
+            const fd = new FormData();
+            fd.append('title', $('#m_title').val());
+            fd.append('type', $('#m_type').val());
+            fd.append('description', $('#m_description').val());
+            fd.append('price', $('#m_price').val());
+            fd.append('permission', $('#m_permission').val());
+            fileList.forEach(f => fd.append('images', f));
+
+            $.ajax({
+                url: API_DETAIL(id),
+                type: 'PUT',
+                data: fd,
+                processData: false,
+                contentType: false,
+                xhrFields: { withCredentials: true },
+                headers: {
+                    'X-HTTP-Method-Override': 'PUT'
+                },
+                success: (data) => {
+                    console.log("✅ Güncelleme başarılı:", data);
+                    $('.submit-btn').first().text('Kaydet');
+                    hideModal();
+                    fetchProducts();
+                },
+                error: (xhr) => {
+                    console.log("❌ Güncelleme hatası:", xhr.status, xhr.responseText);
+                    $('.submit-btn').first().text('Kaydet');
+                    alert('Güncelleme sırasında bir hata oluştu.');
+                }
+            });
+        }
+
+        // Tek sil
+        function deleteOne(id) {
+            if (!confirm('Silinsin mi?')) return;
+            $.ajax({
+                url: API_DETAIL(id),
+                type: 'DELETE',
+                xhrFields: { withCredentials: true }, // ← bu şart
+                success: (data) => {
+                    console.log("✅ Güncelleme başarılı:", data);
+                    $('.submit-btn').first().text('Kaydet');
+                    hideModal();
+                    fetchProducts();
+                },
+                error: (xhr) => {
+                    console.log("❌ Güncelleme hatası:", xhr.status, xhr.responseText);
+                    $('.submit-btn').first().text('Kaydet');
+                    alert('Güncelleme sırasında bir hata oluştu.');
+                }
+            });
+        }
+
+        // Bulk güncelle
+        function bulkUpdate(val) {
+            const ids = $('.row-select:checked').map((i, el) => el.dataset.id).get();
+            ids.forEach(id => {
+                $.ajax({
+                    url: API_DETAIL(id),
+                    type: 'PATCH',
+                    headers: {
+                        'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    data: { permission: val },
+                    success: () => fetchProducts()
+                    });
+            });
+        }
+
+        // Bulk sil
+        function bulkDelete() {
+            if (!confirm('Seçilenler silinsin mi?')) return;
+            $('.row-select:checked').each((i, el) => {
+                const id = el.dataset.id;
+                $.ajax({
+                    url: API_DETAIL(id), type: 'DELETE',
+                    headers: { 'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val() },
+                    success: () => fetchProducts()
+                });
+            });
+        }
+
+        function deleteImage(imageId) {
+            if (!confirm("Bu resmi silmek istediğine emin misin?")) return;
+
+            $.ajax({
+                url: `/dashboard/product-images/${imageId}/`, // 🔁 bunu backend’de yazmalısın
+                type: 'DELETE',
+                xhrFields: { withCredentials: true },
+                success: () => {
+                fetchProducts();
+                hideModal(); // refresh için
+                },
+                error: () => alert("Resim silinemedi.")
+            });
+            }
+
+    </script>
+</body>
+
+</html>

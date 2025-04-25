@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Çıkış Yap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #f7f7f7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .logout-card {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .logout-card h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .logout-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .btn-confirm {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-cancel {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logout-card">
+        <h2>Çıkış Yap</h2>
+        <p>Oturumunuzu sonlandırmak istediğinizden emin misiniz?</p>
+        <button class="btn btn-confirm" onclick="logout()">Çıkış Yap</button>
+        <button class="btn btn-cancel" onclick="cancelLogout()">Geri Dön</button>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function cancelLogout() {
+            localStorage.clear();
+            window.history.back();
+        }
+
+        function logout() {
+            // getCookie fonksiyonu ile csrftoken değerini alıyoruz
+            const csrftoken = getCookie('csrftoken');
+
+            fetch('/api/logout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Çıkış yapılamadı');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    // Başarılı logout sonrası yönlendirme
+                    window.location.href = "/";
+                })
+                .catch(error => {
+                    console.error('Logout hatası:', error);
+                    alert("Çıkış yapılamadı.");
+                });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Kayıt Ol</title>
+  <script src="{% static 'js/api.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+  <script src="{% static 'js/register.js' %}" defer></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="register-container">
+    <form id="register-form" class="register-form">
+      <h2>Hesap Oluştur</h2>
+
+      <input type="text" id="username" placeholder="Kullanıcı Adı" required>
+      <input type="email" id="email" placeholder="E-posta" required>
+      <input type="password" id="password" placeholder="Şifre" required>
+      <input type="password" id="password2" placeholder="Şifre (Tekrar)" required>
+
+      <button type="submit">Kayıt Ol</button>
+
+      <p class="login-link">Zaten hesabın var mı? <a href="/login/">Giriş Yap</a></p>
+    </form>
+  </div>
+</body>
+</html>

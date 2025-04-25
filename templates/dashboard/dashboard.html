@@ -1,0 +1,59 @@
+<!-- dashboard.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <!-- … mevcut head içeriği … -->
+  <link rel="stylesheet" href="{% static 'css/add_product.css' %}">  <!-- form stili için -->
+  <style>
+    /* Basit collapsible stil */
+    .panel { display: none; margin-top: 20px; }
+    .panel.open { display: block; }
+    .toggle-btn { 
+      background: #4CAF50; color: #fff; padding: 10px 20px; 
+      border: none; border-radius: 6px; cursor: pointer;
+    }
+    .toggle-btn:hover { background: #45a049; }
+    table { width:100%; border-collapse: collapse; margin-top: 20px; }
+    table th, table td { border:1px solid #ccc; padding:8px; text-align:left; }
+    .action-btn { margin-right:6px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  {% include 'menu.html' %}
+
+  <section id="productManagement">
+    <button id="toggleProductMgmt" class="toggle-btn">Ürün Yönetimi</button>
+
+    <div id="productMgmtPanel" class="panel">
+      <!-- 1) Ekleme / Güncelleme Formu -->
+      <div id="formContainer">
+        {% include 'add_product.html' %}  <!-- Mevcut add_product.html içeriği buraya gömülür :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1} -->
+      </div>
+
+      <!-- 2) Ürün Listesi -->
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>ID</th><th>Başlık</th><th>Fiyat</th><th>Tür</th><th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- JS Kütüphaneler -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // API endpoint URL’lerini ayarla (Django URL isimlerini kendine göre güncelle)
+    const productListUrl    = "{% url 'product-list' %}";
+    const productCreateUrl  = "{% url 'product-create' %}";
+    // detail/update/delete: product-detail çağrısına id parametresi verilecek
+    const productDetailUrl  = id => "{% url 'product-detail' 0 %}".replace('0', id);
+
+    let editProductId = null;
+  </script>
+  <script src="{% static 'js/ProductManagement.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Sipariş Onayı</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; color: #333;">
+
+  <div style="max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 8px;">
+    <h2 style="color: #2c3e50;">🎉 Siparişiniz Alındı!</h2>
+    <p>Merhaba <strong>{{ user.get_full_name|default:user.username }}</strong>,</p>
+    <p>Yeni siparişiniz başarıyla alındı. Aşağıda detayları görebilirsiniz:</p>
+
+    <h3>📦 Sipariş Bilgileri</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li><strong>Sipariş No:</strong> #{{ order.id }}</li>
+      <li><strong>Tarih:</strong> {{ order.created_at|date:"d.m.Y H:i" }}</li>
+      <li><strong>Toplam Tutar:</strong> {{ order.total_amount }} ₺</li>
+      <li><strong>Adres:</strong> {{ order.address }}</li>
+    </ul>
+
+    <h3>🛍️ Ürünler</h3>
+    <table width="100%" border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse;">
+      <thead style="background: #f0f0f0;">
+        <tr>
+          <th>Ürün</th>
+          <th>Adet</th>
+          <th>Birim Fiyat</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product, qty, price in items %}
+        <tr>
+          <td>{{ product.title }}</td>
+          <td>{{ qty }}</td>
+          <td>{{ price }} ₺</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p style="margin-top: 20px;">Siparişiniz en kısa sürede hazırlanıp size ulaştırılacaktır.</p>
+
+    <p style="color: #999; font-size: 12px; margin-top: 30px;">
+      Bu e-posta bilgilendirme amaçlıdır. Lütfen yanıtlamayınız.
+    </p>
+  </div>
+
+</body>
+</html>

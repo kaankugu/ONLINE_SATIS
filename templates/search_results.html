@@ -1,0 +1,37 @@
+{% load static %}
+
+{% block partition_user %}
+{% include 'menu.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+/>
+  <link rel="stylesheet" href="{% static 'css/products_list.css' %}">
+</head>
+<body>
+  <div class="products-wrapper">
+    <h1 class="section-title" id="search-summary">Yükleniyor...</h1>
+    <div id="product-container" class="product-grid"></div>
+  </div>
+
+  <template id="product-card-template">
+    <div class="product-card">
+      <div class="product-images">
+        <i class="heart-icon fa-regular fa-heart"></i>
+      
+      </div>
+      <h3 class="product-title"></h3>
+      <div class="product-rating"></div>
+      <p class="product-price"></p>
+    </div>
+  </template>
+
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/search_results.js' %}"></script>
+
+</body>
+</html>
+{% endblock partition_user %}

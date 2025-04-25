@@ -1,0 +1,26 @@
+
+{% load static %}
+
+{% if user.is_authenticated %}
+
+{%include "menu.html" %}
+ 
+<!DOCTYPE html> 
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_product.css' %}"/> 
+    <title>Product List</title>
+</head>
+<body>
+    <div>
+        {% csrf_token %}
+        <div id="product-container"></div>
+        
+    </div>   
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/admin_product.js' %}"></script>
+        
+</body>
+</html> 
+
+{% endif %}

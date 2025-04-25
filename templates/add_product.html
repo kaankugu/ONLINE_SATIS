@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ürün Ekle</title>
+  <link rel="stylesheet" href="{% static 'css/add_product.css' %}">
+  <script>
+    let productCreateUrl = "{% url 'product-create' %}";
+    let homePageUrl = "{% url 'home-page' %}";
+  </script>
+</head>
+<body>
+
+  {% include 'menu.html' %}
+
+  <section class="form-section">
+    <h1>Yeni Ürün Ekle</h1>
+
+    <!-- FORM BAŞLANGICI -->
+    <form id="productForm" method="POST" enctype="multipart/form-data" onsubmit="event.preventDefault(); add();">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="title">Ürün Adı</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="type">Ürün Türü</label>
+        <select id="type" name="type" required>
+          <option value="">Tür Seçiniz</option>
+          <option value="tabak">Tabak</option>
+          <option value="kase">Kase</option>
+          <option value="karo">Karo</option>
+          <option value="vazo">Vazo</option>
+          <option value="diğer">Diğer</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description">Açıklama</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Fiyat (₺)</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+      </div>
+
+      <div class="form-group">
+        <label for="uploaded_images">Resimler</label>
+        <input type="file" id="uploaded_images" name="uploaded_images" accept="image/*" multiple onchange="previewImages(event)">
+      </div>
+
+      <div id="image-preview"></div>
+
+      <button type="submit" class="submit-btn">Ürünü Kaydet</button>
+    </form>
+    <!-- FORM BİTİŞİ -->
+
+  </section>
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/AddProduct.js' %}"></script>
+
+</body>
+</html>

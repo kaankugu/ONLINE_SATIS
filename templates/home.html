@@ -1,0 +1,56 @@
+{% load static %}
+
+{% block content %}
+<div class="homepage">
+  <!-- Ana Sayfa Başlık ve Hoşgeldiniz Mesajı -->
+  <header class="header">
+    <a href="/">
+      <img src="{% static 'images/logo.png' %}" alt="Kaan Seramik Logo" class="logo-img">
+    </a>
+
+  </header>
+
+  <section class="welcome-message">
+    <h1>HOŞ GELDİNİZ</h1>
+    <a href="{% url 'products' %}">
+      <button class="shop-btn">Alışverişe Başla</button>
+    </a>
+  </section>
+
+  <!-- Ürünler Grid'i -->
+  <section class="products">
+
+    <div class="product-list">
+
+      <div class="product-card">
+        <a href="/search-results/?q=kase">
+          <img src="{% static 'images/SeramikKase.png' %}" alt="Ürün 1">
+        </a>
+      </div>
+    
+      <div class="product-card">
+        <a href="/search-results/?q=tabak">
+          <img src="{% static 'images/SeramikTabak.png' %}" alt="Ürün 2">
+        </a>
+      </div>
+    
+      <div class="product-card">
+        <a href="/search-results/?q=karo">
+          <img src="{% static 'images/SeramikPano.png' %}" alt="Ürün 3">
+        </a>
+      </div>
+    
+      <div class="product-card">
+        <a href="/search-results/?q=vazo">
+          <img src="{% static 'images/SeramikVazo.png' %}" alt="Ürün 4">
+        </a>
+      </div>
+    
+    </div>
+  </section>
+</div>
+<script src="{% static 'js/api.js' %}"></script>
+
+{% endblock %}
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">

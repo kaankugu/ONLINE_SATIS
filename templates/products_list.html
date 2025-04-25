@@ -1,0 +1,34 @@
+{% load static %}
+
+{% block partition_user %}
+{% include 'menu.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/products_list.css' %}">
+</head>
+<body>
+    <div class="products-wrapper">
+        <div id="product-container" class="product-grid"></div>        
+    </div>
+
+    <!-- Ürün kartı için şablon -->
+    <template id="product-card-template">
+        <div class="product-card">
+            <div class="product-images">
+                <span class="heart-icon" style="cursor:pointer;"></span>
+            </div>
+            <h3 class="product-title"></h3>
+            <div class="product-rating"></div>
+            <p class="product-price"></p>
+            
+        </div>
+    </template>
+
+    <!-- ✅ Script dosyasını body kapanışından hemen önce çağırıyoruz -->
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/products_list.js' %}"></script>
+</body>
+</html>
+{% endblock partition_user %}
+ 

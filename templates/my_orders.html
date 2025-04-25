@@ -1,0 +1,27 @@
+{% load static %}
+{% include 'menu.html' %}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Siparişlerim</title>
+  <link rel="stylesheet" href="{% static 'css/my_orders.css' %}">
+</head>
+<body>
+
+  <section class="order-list-container">
+    <h2>📦 Siparişlerim</h2>
+    <div id="orders-container">
+      <p>Yükleniyor...</p>
+
+    </div>
+  </section>
+
+  <!-- jQuery önce gelmeli -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Dinamik sipariş JS dosyası -->
+  <script src="{% static 'js/my_orders.js' %}"></script>
+
+</body>
+</html>

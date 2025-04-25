@@ -1,0 +1,113 @@
+{%load static%}
+<!DOCTYPE html>
+
+<html>
+<head>
+    
+    <title>Yetki Güncelleme</title>
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% include 'menu.html' %}
+    <link rel="stylesheet" href="{% static 'css/superuser_permission.css' %}">
+
+</head>
+    <body>
+        
+        <form id="updateForm" action="#">
+            {% csrf_token %}
+            <div class="container" id="userContainer"></div>
+        </form>
+
+        <script>
+            const apiUrl = '{% url "all_user" %}';
+            const updateForm = document.getElementById('updateForm');
+            const userContainer = document.getElementById('userContainer');
+            var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            // "Güncelle" butonuna tıklanınca tetiklenecek fonksiyon
+            function sendPostRequest(email, typePerm) {
+                const data = {
+                    email: email,
+                    typePerm: typePerm
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://127.0.0.1:8000/update_user/",
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    headers: {
+                        "X-CSRFToken": csrfToken
+                    },
+                    success: function(response) {
+                        console.log('İstek başarılı, yanıt:', response);
+                        alert('Güncelleme Başarı İle Gerçekleşti');
+
+                        fetchUsers();
+                    },
+                    error: function(error) {
+                        console.error('İstek başarısız:', error);
+                    }
+                });
+            }
+
+            // Kullanıcı kartını oluşturan fonksiyon
+            function createUserCard(user) {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <h2 class = "hedaer">${user.email}</h2>
+                    <p >Username: ${user.username}</p>
+                    <p class = "typeOfOPerm">Yetki Türü: ${getTypePermLabel(user)}</p>
+                    <select class="typePermSelect">
+                        <option value="admin" ${user.typePerm === "admin" ? "selected" : ""}>Admin</option>
+                        <option value="superuser" ${user.typePerm === "superuser" ? "selected" : ""}>Superuser</option>
+                        <option value="seller" ${user.typePerm === "seller" ? "selected" : ""}>seller</option>
+                    </select>
+                    <button class="updateButton" data-email="${user.email}">Güncelle</button>
+                `;
+
+                const updateButton = card.querySelector('.updateButton');
+                updateButton.addEventListener('click', function() {
+                    const email = this.dataset.email;
+                    const select = card.querySelector('.typePermSelect');
+                    const typePerm = select.value;
+                    sendPostRequest(email, typePerm);
+                });
+
+                
+            
+                return card;
+            }
+
+            // Tüm kullanıcıları çeken ve kartları oluşturan fonksiyon
+            function fetchUsers() {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        userContainer.innerHTML = '';
+                        data.forEach(user => {
+                            const card = createUserCard(user);
+                            userContainer.appendChild(card);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("İstek hatası:", error);
+                    });
+            }
+            function getTypePermLabel(user) {
+                if (user.is_superuser) {
+                    return "superuser";
+                } else if (user.is_admin) {
+                    return "admin";
+                } else if (user.is_seller) {
+                    return "seller";
+                } else {
+                    return "Bilinmeyen Yetki Türü";
+                }
+            }
+        
+            fetchUsers();
+        </script>
+</body>
+</html>

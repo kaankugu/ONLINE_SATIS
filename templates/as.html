@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Giriş Yap</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <script src="{% static 'js/api.js' %}"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <div class="login-container">
+    <form method="POST" class="login-form">
+      {% csrf_token %}
+      <h2>Giriş Yap</h2>
+
+      <input type="text" name="username" placeholder="Kullanıcı Adı" required>
+      <input type="password" name="password" placeholder="Şifre" required>
+
+      <button type="submit">Giriş Yap</button>
+
+      <p class="register-link">Hesabın yok mu? <a href="/register/">Kayıt Ol</a></p>
+    </form>
+
+    <div class="google-login">
+      <div id="g_id_onload"
+           data-client_id="359671172063-gqf8hp822gmhm1bhht01v8s0dp6m9itl.apps.googleusercontent.com"
+           data-callback="handleGoogleCredential"
+           data-auto_prompt="false">
+      </div>
+
+      <div class="g_id_signin"
+           data-type="standard"
+           data-size="large"
+           data-theme="outline"
+           data-text="sign_in_with"
+           data-shape="rectangular"
+           data-logo_alignment="left">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function handleGoogleCredential(response) {
+      console.log("🎯 Google'dan response:", response);
+
+      const accessToken = response.credential;
+      console.log("✅ Access Token:", accessToken);
+
+      try {
+        const res = await fetch('/api/google/login/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ access_token: accessToken })
+        });
+
+        const data = await res.json();
+        console.log("📥 Backend response:", data);
+
+        if (res.ok) {
+          alert('Google ile giriş başarılı!');
+          window.location.href = '/';
+        } else {
+          alert('❌ Giriş başarısız!');
+        }
+      } catch (err) {
+        console.error("🚨 Sunucu hatası:", err);
+      }
+    }
+  </script>
+</body>
+</html>

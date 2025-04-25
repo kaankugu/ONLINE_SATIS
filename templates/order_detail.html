@@ -1,0 +1,11 @@
+{% load static %}
+{% include 'menu.html' %}
+{% block content %}
+  <section class="container">
+    <h2>Sipariş Detayı</h2>
+    <div id="order-detail-container">Yükleniyor...</div>
+  </section>
+
+  <script src="{% static 'js/order_detail.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/order_detail.css' %}">
+{% endblock %}

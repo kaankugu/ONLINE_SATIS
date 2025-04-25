@@ -1,0 +1,43 @@
+{% load static %}
+
+{% block content %}
+  {% include 'menu.html' %}
+
+  <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+
+  <section class="product-detail" id="product-detail" data-product-id="{{ product.id }}">
+    <div id="loading">Yükleniyor...</div>
+    <div id="product-detail-container" style="display: none;"></div>
+  </section>
+
+  <template id="product-detail-template">
+
+    <div class="detail-top">
+      <div class="product-images"></div>
+      <div class="product-summary">
+        <h1 class="product-title"></h1>
+        <div class="rating-summary"></div>
+        <p class="product-description"></p>
+        <p class="product-price"></p>
+        <button class="add-to-cart-btn">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <!-- ==== BENZER ÜRÜNLER ==== -->
+    <section class="similar-products-section">
+      <h2>Benzer Ürünler</h2>
+      <div class="similar-products-container"></div>
+    </section>
+
+    <section class="reviews-section">
+      <h2 class="review-count"></h2>
+      <div class="reviews"></div>
+    </section>
+
+    <section class="review-form-section"></section>
+  </template>
+
+  
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/product_detail.js' %}" defer></script>
+{% endblock %}

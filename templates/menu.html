@@ -1,0 +1,75 @@
+{% load static %}
+<nav class="navbar">
+
+  <div class="navbar-section left">
+    <div class="logo">
+        <h2 onclick="window.location.href='/products/'">KAAN SERAMİK</h2>
+    </div>
+  </div>
+
+  <div class="navbar-section center">
+    <div class="search-container nav-search">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" placeholder="Ürün ara..." class="search-input nav-input" />
+      <ul id="search-suggestions" class="suggestion-list"></ul>
+    </div>
+  </div>
+
+  <div class="navbar-section right normal-icons">
+    {% if user.is_authenticated %}
+  
+      {% if user.is_superuser %}
+        <!-- ✅ Admin menüsü -->
+        <div class="admin-navbar-wrapper">
+          <a href="/dashboard/products/page" class="admin-nav-item">
+            <i class="fas fa-cubes"></i> Ürünler
+          </a>
+          <a href="/dashboard/orders/" class="admin-nav-item">
+            <i class="fas fa-clipboard-list"></i> Siparişler
+          </a>
+          <a href="{% url 'logout' %}" class="admin-nav-item logout">
+            <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+          </a>
+        </div>
+
+      {% else %}
+        <!-- 👤 Normal kullanıcı menüsü -->
+        <div class="dropdown">
+          <i class="fas fa-user dropbtn"></i>
+          <div class="dropdown-content">
+            <a href="/profile">Profilim</a>
+            <a href="/orders/my-orders/">Siparişlerim</a>
+            <a href="{% url 'logout' %}">Çıkış Yap</a>
+          </div>
+        </div>
+        <a href="/liked"><i class="fas fa-heart"></i></a>
+        <a href="{% url 'bag' %}"><i class="fas fa-shopping-cart"></i></a>
+      {% endif %}
+
+    {% else %}
+      <!-- 👤 Giriş yapılmamış -->
+      <a href="{% url 'login-page' %}"><button>Giriş Yap</button></a>
+    {% endif %}
+  </div>
+
+  {% if user.is_authenticated and not user.is_superuser %}
+  <div class="navbar-section right hamburger-wrapper">
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <div class="hamburger-menu" id="hamburgerMenu">
+      <a href="/profile">Profilim</a>
+      <a href="/orders/my-orders/">Siparişlerim</a>
+      <a href="/liked">Beğenilenler</a>
+      <a href="{% url 'bag' %}">Sepet</a>
+      <a href="{% url 'logout' %}">Çıkış Yap</a>
+    </div>
+  </div>
+  {% endif %}
+</nav>
+
+<!-- CSS ve JS -->
+<script src="{% static 'js/api.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+<script src="{% static 'js/menu.js' %}"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">

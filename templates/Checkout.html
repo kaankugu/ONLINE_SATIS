@@ -1,0 +1,43 @@
+{% load static %}
+{% include 'menu.html' %}
+
+{% block content %}
+<div class="checkout-container">
+  <div class="checkout-info">
+    <h2>📍 Teslimat Adresi</h2>
+    <div id="checkout-address">
+      <select id="address-select" class="select-box"></select>
+      <div id="new-address-form" class="inline-form" style="display:none;">
+        <input id="addr-title" placeholder="Başlık" />
+        <input id="addr-city" placeholder="Şehir" />
+        <input id="addr-district" placeholder="İlçe" />
+        <textarea id="addr-full" placeholder="Açık Adres"></textarea>
+        <button id="add-address-btn">Kaydet</button>
+      </div>
+    </div>
+
+    <h2>💳 Kart Bilgisi</h2>
+    <div id="checkout-card">
+      <select id="card-select" class="select-box"></select>
+      <div id="new-card-form" class="inline-form" style="display:none;">
+        <input id="card-holder" placeholder="Kart Sahibi" />
+        <input id="card-number" placeholder="Kart Numarası" />
+        <input id="card-expiration" placeholder="Son Kullanma (MM/YY)" />
+        <input id="card-cvv" placeholder="CVV" />
+        <button id="add-card-btn">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="order-summary">
+    <h3>🧾 Sipariş Özeti</h3>
+    <div id="cart-summary">
+      <p>Sepet yükleniyor...</p>
+    </div>
+    <button id="final-checkout-button">Siparişi Tamamla</button>
+  </aside>
+</div>
+
+<script src="{% static 'js/checkout.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock %}

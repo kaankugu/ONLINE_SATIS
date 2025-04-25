@@ -1,0 +1,21 @@
+{% load static %}
+
+{% block partition_user %}
+{% include 'menu.html' %}
+
+<head>
+    <script src="{% static 'js/api.js' %}"></script>
+    <title>Beğenilen Ürünler - Kaan Seramik</title>
+    <link rel="stylesheet" href="{% static 'css/liked.css' %}">
+    <script src="{% static 'js/liked.js' %}" defer></script>
+
+</head>
+
+<body>
+    <div class="liked-wrapper">
+        <h1 class="section-title">❤️ Beğendiğin Ürünler</h1>
+        <div id="liked-container" class="product-grid"></div>
+    </div>
+</body>
+
+{% endblock %}
