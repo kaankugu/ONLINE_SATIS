@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+form label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+form button {
+  width: 100%;
+  background-color: #10b981;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #059669;
+}
+
+.alt-links {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.alt-links a {
+  text-decoration: none;
+  color: #374151;
+  font-size: 14px;
+}
+
+.google-login {
+  margin-top: 30px;
+  text-align: center;
+}
+iframe[src*="https://accounts.google.com/gsi/"] {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+.error-alert {
+  background-color: #ffdddd;
+  color: #a94442;
+  border-left: 6px solid #f44336;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}

@@ -1,0 +1,99 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f2f4f7;
+  color: #333;
+}
+
+.order-list-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 32px;
+}
+
+.order-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.order-card h4 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  color: #222;
+}
+
+.order-card p {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.order-card .badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 12px;
+  color: white;
+  background-color: #6c757d;
+}
+
+.badge.pending { background-color: #ffc107; }     /* Bekliyor */
+.badge.approved { background-color: #17a2b8; }    /* Onaylandı */
+.badge.shipped { background-color: #007bff; }     /* Kargoya verildi */
+.badge.delivered { background-color: #28a745; }   /* Teslim edildi */
+.badge.cancelled { background-color: #dc3545; }   /* İptal */
+
+.order-card ul {
+  padding-left: 18px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.order-card li {
+  margin-bottom: 5px;
+}
+
+.order-card .total {
+  font-weight: bold;
+  font-size: 16px;
+  color: #212529;
+  margin-top: 10px;
+}
+
+.delete-order-btn {
+  margin-top: 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-order-btn:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  .order-list-container {
+    padding: 0 16px;
+  }
+
+  .order-card {
+    padding: 20px;
+  }
+
+  .order-card h4 {
+    font-size: 18px;
+  }
+}

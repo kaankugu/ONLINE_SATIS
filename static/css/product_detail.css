@@ -1,0 +1,117 @@
+.product-detail {
+    padding: 20px 40px;
+    max-width: 900px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.detail-top {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+/* — Galeri — */
+.product-images {
+    flex: 1;
+    max-width: 50%;
+}
+.image-gallery { position: relative; }
+.main-image img { width: 100%; border-radius: 10px; }
+.prev, .next {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.5); color: #fff; border: none;
+    padding: 6px 10px; cursor: pointer; border-radius: 50%; font-size: 1.2em;
+}
+.prev { left: 10px; } .next { right: 10px; }
+.thumbnails {
+    display: flex; gap: 10px; margin-top: 10px; overflow-x: auto;
+}
+.thumbnails img {
+    width: 80px; cursor: pointer; border: 2px solid transparent;
+    border-radius: 5px; flex-shrink: 0;
+}
+.thumbnails img.active { border-color: #0288D1; }
+
+/* — Özet — */
+.product-summary {
+    flex: 1; display: flex; flex-direction: column; gap: 15px;
+}
+.product-title { margin: 0; font-size: 1.8em; }
+.rating-summary .stars { font-size: 1.2em; color: #f5a623; }
+.rating-summary .count { margin-left: 8px; color: #555; }
+.product-description {
+    margin: 10px 0; color: #444; line-height: 1.5; font-size: 1em;
+}
+.product-price {
+    font-size: 1.6em; color: #e53935; margin: 0;
+}
+.add-to-cart-btn {
+    background-color: #4CAF50; color: white; border: none;
+    padding: 12px 25px; cursor: pointer; border-radius: 5px;
+    font-size: 1em;
+}
+
+/* — Benzer Ürünler — */
+.similar-products-section {
+    margin-bottom: 40px;
+}
+.similar-products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
+    gap: 20px;
+}
+.similar-product-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform .2s;
+}
+.similar-product-card:hover { transform: translateY(-5px); }
+.similar-product-card img {
+    width: 100%; height: auto;
+}
+.similar-product-card .sim-title {
+    font-size: 0.95em; margin: 10px 5px 0;
+}
+.similar-product-card .sim-price {
+    font-size: 1em; color: #e53935; margin: 5px 0 10px;
+}
+
+/* — Yorumlar — */
+.reviews-section {
+    margin-top: 20px; border-top: 1px solid #ddd; padding-top: 20px;
+}
+.review {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.review strong { display: block; margin-bottom: 5px; }
+.review small {
+    display: block; margin-top: 8px; color: #888;
+}
+.review button {
+    background: transparent; border: none; cursor: pointer;
+    color: #e53935; font-size: 1em; margin-top: 10px;
+}
+.review button:hover { text-decoration: underline; }
+
+.review-form-section form {
+    margin-top: 20px;
+    display: flex; flex-direction: column; gap: 10px;
+}
+.review-form-section input,
+.review-form-section textarea {
+    padding: 10px; border: 1px solid #ddd; border-radius: 5px;
+}
+.review-form-section button {
+    align-self: start;
+    padding: 10px 20px; background-color: #0288D1;
+    border: none; border-radius: 5px; color: #fff; cursor: pointer;
+}

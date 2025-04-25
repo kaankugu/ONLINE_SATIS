@@ -1,0 +1,27 @@
+.order-detail-card {
+    background: #fffefb;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 14px;
+  }
+  
+  .order-detail-card h4 {
+    margin-bottom: 10px;
+    color: #5a341e;
+  }
+  
+  .order-detail-card p {
+    margin: 4px 0;
+  }
+  
+  .order-detail-card ul {
+    margin-top: 10px;
+    padding-left: 20px;
+  }
+  
+  .order-detail-card li {
+    margin-bottom: 5px;
+  }
+  

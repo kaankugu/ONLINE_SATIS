@@ -1,0 +1,29 @@
+/* kart.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  main {
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+  }
+  

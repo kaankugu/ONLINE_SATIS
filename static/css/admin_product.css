@@ -1,0 +1,39 @@
+.card {
+    top :10px; 
+    width: 17rem;
+    margin-bottom: 20px;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    margin-bottom: 10px;
+}
+
+.update-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #5df815d5;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+    background-color: #85fa4e;
+}
