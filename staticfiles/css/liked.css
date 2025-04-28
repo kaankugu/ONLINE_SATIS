@@ -1,0 +1,67 @@
+.liked-wrapper {
+    padding: 40px;
+}
+
+.section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-images img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.liked-heart {
+    color: crimson;
+    font-size: 22px;
+}
+
+
+
+
+.liked-heart-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: crimson;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+}
+
+/* Tüm focus ve aktif durumlarını sıfırla */
+.liked-heart-btn:focus,
+.liked-heart-btn:focus-visible,
+.liked-heart-btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* Ekstra güvenlik için default görünüm de sıfırlanır */
+.liked-heart-btn::-moz-focus-inner {
+    border: 0;
+}
