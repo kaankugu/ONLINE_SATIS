@@ -6,6 +6,8 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+
 SECRET_KEY = os.environ.get("SECRET_KEY", "geliştirme-secret")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = ['online-satis.onrender.com', 'kaanseramik.com', 'www.kaanseramik.com']
@@ -203,3 +205,11 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://online-satis.onrender.com',
+    'https://www.kaanseramik.com',
+    'https://kaanseramik.com',
+]
