@@ -1,19 +1,33 @@
-
-import os 
+import os
 from pathlib import Path
-import datetime
 from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get("SECRET_KEY", "bu-yerine-envdosyasından-alınacak")
+DEBUG = False
 
+ALLOWED_HOSTS = [
+    'online-satis.onrender.com',
+    'kaanseramik.com',
+    'www.kaanseramik.com'
+]
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "geliştirme-secret")
-DEBUG = os.environ.get("DEBUG", "True") == "True"
-ALLOWED_HOSTS = ['online-satis.onrender.com', 'kaanseramik.com', 'www.kaanseramik.com']
+# CSRF Güvenli Domainler
+CSRF_TRUSTED_ORIGINS = [
+    'https://online-satis.onrender.com',
+    'https://www.kaanseramik.com',
+    'https://kaanseramik.com',
+]
 
+# Static & Media
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
+# Uygulamalar
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,48 +36,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
     'rest_framework',
-    "corsheaders",
-    "API",
-    'orders',     
+    'corsheaders',
+    'API',
+    'orders',
     'dashboard',
 ]
 
 SITE_ID = 1
 
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-ACCOUNT_LOGOUT_REDIRECT_URL = "/login/"
-
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-
-SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_QUERY_EMAIL = True
-
-REST_USE_JWT = True
-
-
-ACCOUNT_LOGIN_METHODS = {'email'}  # Yeni yöntem budur
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': ['openid', 'email', 'profile'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        "APP": {
-            "client_id": "359671172063-gqf8hp822gmhm1bhht01v8s0dp6m9itl.apps.googleusercontent.com",
-            "secret": "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",
-            "key": ""
-        }
-    }
-}
-
-
+# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -73,15 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'allauth.account.middleware.AccountMiddleware',
-
 ]
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000", 
-    "http://127.0.0.1:8000"       # ya da gerçek front-end origin’in
-]
-CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'ONLİNE_SATIS.urls'
 
@@ -101,10 +82,7 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'ONLİNE_SATIS.wsgi.application'
-
-
 
 DATABASES = {
     'default': {
@@ -115,51 +93,19 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'API.CustomUser'
 
-
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-
 LANGUAGE_CODE = 'tr'
-
 TIME_ZONE = 'Europe/Istanbul'
-
 USE_I18N = True
-
 USE_TZ = True
-
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Django Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -177,23 +123,10 @@ REST_FRAMEWORK = {
     ],
 }
 
-
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'testflickquest@gmail.com'
-EMAIL_HOST_PASSWORD = 'zaulglluhnunmdwa'
-
-CORS_ALLOW_ALL_ORIGINS = True
-
-
+# JWT
 JWT_ALGORITHM = 'HS256'
-ACCESS_TOKEN_LIFETIME = datetime.timedelta(minutes=15)  
-REFRESH_TOKEN_LIFETIME = datetime.timedelta(days=7)
-
+ACCESS_TOKEN_LIFETIME = timedelta(minutes=15)
+REFRESH_TOKEN_LIFETIME = timedelta(days=7)
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
@@ -205,10 +138,14 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+# E-posta
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://online-satis.onrender.com',
-    'https://www.kaanseramik.com',
-    'https://kaanseramik.com',
-]
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
